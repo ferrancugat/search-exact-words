@@ -7,7 +7,7 @@ import java.util.List;
 
 public class InMemoryListIndexDocumentStore implements IndexDocumentStore {
 
-    List<IndexDocument> indexDocuments= new LinkedList<>();
+    final private List<IndexDocument> indexDocuments = new LinkedList<>();
 
     @Override
     public void add(IndexDocument indexDocument) {

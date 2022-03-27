@@ -35,7 +35,7 @@ public class Application {
             DirectoryIndexService directoryIndexService = ApplicationContext.getInstance().getDirectoryIndexService();
             directoryIndexService.indexTextDirectory(indexableDirectory);
         } catch (IOException e) {
-            System.out.println("There has been an error indexing directory: "+e.getMessage());
+            System.out.println("There has been an error indexing directory: " + e.getMessage());
             return false;
         }
         return true;

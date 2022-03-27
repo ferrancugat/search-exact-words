@@ -16,18 +16,18 @@ public class ApplicationContext {
     private final RankingScoreService rankingScoreService;
     private final CommandLineParser commandLineParser;
 
-    public static synchronized ApplicationContext getInstance(){
-        if (INSTANCE==null){
-            INSTANCE=new ApplicationContext();
-        }
-        return INSTANCE;
-    }
-
-    private ApplicationContext(){
+    private ApplicationContext() {
         indexDocumentStore = new InMemoryListIndexDocumentStore();
         directoryIndexService = new DirectoryIndexServiceImpl(getIndexDocumentStore());
         rankingScoreService = new RankingScoreServiceImpl(getIndexDocumentStore());
         commandLineParser = new CommandLineParser(getRankingScoreService());
+    }
+
+    public static synchronized ApplicationContext getInstance() {
+        if (INSTANCE == null) {
+            INSTANCE = new ApplicationContext();
+        }
+        return INSTANCE;
     }
 
     public IndexDocumentStore getIndexDocumentStore() {

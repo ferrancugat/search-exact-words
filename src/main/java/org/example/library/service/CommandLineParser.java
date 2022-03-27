@@ -13,13 +13,13 @@ public class CommandLineParser {
     }
 
     public void handleCommand(String line) {
-            if (line==null || line.isEmpty()){
-                return;
-            }
-            if (":quit".equals(line)){
-                exit();
-            }
-            processLine(line);
+        if (line == null || line.isEmpty()) {
+            return;
+        }
+        if (":quit" .equals(line)) {
+            exit();
+        }
+        processLine(line);
     }
 
     private void processLine(String line) {
@@ -28,7 +28,7 @@ public class CommandLineParser {
         scores.forEach(System.out::println);
     }
 
-    private void exit(){
+    private void exit() {
         System.exit(0);
     }
 }

@@ -12,6 +12,7 @@ import org.mockito.Mockito;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.Objects;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.times;
@@ -23,14 +24,14 @@ public class DirectoryIndexServiceTest {
     private DirectoryIndexService service;
 
     @BeforeEach
-    public void init(){
+    public void init() {
         mockStore = Mockito.mock(InMemoryListIndexDocumentStore.class);
         service = new DirectoryIndexServiceImpl(mockStore);
     }
 
     private File getFileResource(String resource) {
         ClassLoader classLoader = getClass().getClassLoader();
-        return new File(classLoader.getResource(resource).getFile());
+        return new File(Objects.requireNonNull(classLoader.getResource(resource)).getFile());
     }
 
     @Test
@@ -43,6 +44,7 @@ public class DirectoryIndexServiceTest {
         verify(mockStore, times(4)).add(any(IndexDocument.class)); // test passes
 
     }
+
     @Test
     public void shouldIndexDocumentContainWords() throws IOException {
         //given

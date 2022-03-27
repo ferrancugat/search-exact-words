@@ -1,14 +1,12 @@
 package org.example.library.service.impl;
 
-import org.example.library.model.IndexDocument;
 import org.example.library.model.WordCounterIndexDocument;
 import org.example.library.service.DirectoryIndexService;
 import org.example.library.store.IndexDocumentStore;
 import org.example.library.utils.FileUtils;
 
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.IOException;
+import java.io.*;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.util.Map;
 import java.util.function.Function;
@@ -22,8 +20,8 @@ import static org.example.library.utils.FileUtils.FILE_EXTENSION;
 
 public class DirectoryIndexServiceImpl implements DirectoryIndexService {
 
-    private final IndexDocumentStore indexDocumentStore;
-    private final String STOP_WORD_FILE ="stopwords.txt";
+    final private IndexDocumentStore indexDocumentStore;
+    final private static String STOP_WORD_FILE = "stopwords.txt";
     private String stopWordRegex;
 
     public DirectoryIndexServiceImpl(IndexDocumentStore indexDocumentStore) {
@@ -32,18 +30,12 @@ public class DirectoryIndexServiceImpl implements DirectoryIndexService {
     }
 
     private void initStopWordRegex() {
-        ClassLoader classLoader = getClass().getClassLoader();
-        File file = new File(classLoader.getResource(STOP_WORD_FILE).getFile());
-        if (file != null) {
-            try {
-                stopWordRegex = Files.readAllLines(file.toPath())
-                        .stream()
-                        .flatMap(line -> Stream.of(line.split("\\s+")))//all-white spaces including tab character
-                        .collect(Collectors.joining("|", "\\b(", ")\\b\\s?"));
-            } catch (IOException e) {
-                System.out.println("Stop words have not been initialized");
-            }
-        }
+        InputStream streamReader = getClass().getClassLoader().getResourceAsStream(STOP_WORD_FILE);
+        stopWordRegex = new BufferedReader(new InputStreamReader(streamReader,
+                StandardCharsets.UTF_8))
+                .lines()
+                .flatMap(line -> Stream.of(line.split("\\s+")))//all-white spaces including tab character
+                .collect(Collectors.joining("|", "\\b(", ")\\b\\s?"));
     }
 
     @Override

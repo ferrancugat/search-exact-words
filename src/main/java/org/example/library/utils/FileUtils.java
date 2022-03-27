@@ -7,11 +7,11 @@ import java.io.FilenameFilter;
 public class FileUtils {
     public static final String FILE_EXTENSION = "txt";
 
-    private FileUtils(){
+    private FileUtils() {
     }
 
     public static File[] getFilteredFilesFromDirectory(File indexableDirectory, String fileExtension) throws FileNotFoundException {
-        if (!indexableDirectory.isDirectory() || !indexableDirectory.exists()){
+        if (!indexableDirectory.isDirectory() || !indexableDirectory.exists()) {
             throw new FileNotFoundException("No directory given.");
         }
         return indexableDirectory.listFiles(new ExtensionFilenameFilter(fileExtension));
@@ -20,18 +20,15 @@ public class FileUtils {
 
     private static class ExtensionFilenameFilter implements FilenameFilter {
 
-        String extension;
+        final String extension;
 
-        ExtensionFilenameFilter(String fileExtension){
-            this.extension = "."+fileExtension.toLowerCase();
+        ExtensionFilenameFilter(String fileExtension) {
+            this.extension = "." + fileExtension.toLowerCase();
         }
+
         public boolean accept(File dir, String name) {
             String lowercaseName = name.toLowerCase();
-            if (lowercaseName.endsWith(extension)) {
-                return true;
-            } else {
-                return false;
-            }
+            return lowercaseName.endsWith(extension);
         }
-    };
+    }
 }

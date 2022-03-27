@@ -2,8 +2,8 @@ package org.example.library.model;
 
 public final class RankingScore {
 
-    final String document;
-    final int score;
+    final private String document;
+    final private int score;
 
     public RankingScore(String document, int score) {
         this.document = document;
@@ -20,6 +20,6 @@ public final class RankingScore {
 
     @Override
     public String toString() {
-        return document+":"+score + '%';
+        return document + ":" + score + '%';
     }
 }

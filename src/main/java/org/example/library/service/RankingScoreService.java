@@ -7,7 +7,7 @@ import java.util.List;
 
 public interface RankingScoreService {
 
-    public List<RankingScore> getTopIndexScoring(String[] words);
+    List<RankingScore> getTopIndexScoring(String[] words);
 
-    public RankingScore calculateScore(IndexDocument indexDocument, String[] words) ;
+    RankingScore calculateScore(IndexDocument indexDocument, String[] words);
 }

@@ -6,5 +6,6 @@ import java.io.IOException;
 public interface DirectoryIndexService {
 
     void indexTextDirectory(File indexableDirectory) throws IOException;
+
     void indexTextFile(File indexableFile) throws IOException;
 }
