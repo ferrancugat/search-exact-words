@@ -1,5 +1,6 @@
 package org.example.library.service.impl;
 
+import org.example.library.model.IndexDocument;
 import org.example.library.model.WordCounterIndexDocument;
 import org.example.library.service.DirectoryIndexService;
 import org.example.library.store.IndexDocumentStore;
@@ -8,8 +9,6 @@ import org.example.library.utils.FileUtils;
 import java.io.*;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
-import java.util.Map;
-import java.util.function.Function;
 import java.util.function.Predicate;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -51,18 +50,17 @@ public class DirectoryIndexServiceImpl implements DirectoryIndexService {
 
     @Override
     public void indexTextFile(File indexableFile) throws IOException {
-        Map<String, Long> wordCounter =
-                Files.readAllLines(indexableFile.toPath())
+        IndexDocument indexDocument = new WordCounterIndexDocument(indexableFile.getName()); // abstract factory missing
+        Files.readAllLines(indexableFile.toPath())
                         .stream()
-                        .flatMap(line -> Stream.of(line.split("\\s+")))//all-white spaces including tab character.
-                        .map(String::trim)//remove break line
-                        .map(String::toLowerCase)
                         .map(this::cleanPuntuation)
+                        .map(String::toLowerCase)
                         .map(this::cleanStopWords)
+                        .flatMap(line -> Stream.of(line.split("\\s+")))//all-white spaces including tab character.
                         .filter(Predicate.not(String::isEmpty))
                         .filter(it -> !isDigit(it))
-                        .collect(Collectors.groupingBy(Function.identity(), Collectors.counting()));
-        indexDocumentStore.add(new WordCounterIndexDocument(wordCounter, indexableFile.getName()));
+                        .forEach(it -> indexDocument.addWord(it));
+        indexDocumentStore.add(indexDocument);
     }
 
     private boolean isDigit(String input) {

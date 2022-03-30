@@ -1,12 +1,17 @@
 package org.example.library.model;
 
+import java.util.HashMap;
 import java.util.Map;
 
 public final class WordCounterIndexDocument implements IndexDocument {
 
     final private Map<String, Long> wordCounter;
     final private String name;
-    final private long totalWords;
+    private long totalWords;
+
+    public WordCounterIndexDocument(String name) {
+        this(new HashMap<>(),name);
+    }
 
     public WordCounterIndexDocument(Map<String, Long> wordCounter, String name) {
         this.wordCounter = wordCounter;
@@ -22,6 +27,12 @@ public final class WordCounterIndexDocument implements IndexDocument {
     @Override
     public String documentName() {
         return name;
+    }
+
+    @Override
+    public void addWord(String word) {
+        wordCounter.merge(word,1L,(a,b)->a+b);
+        totalWords++;
     }
 
     @Override

@@ -9,6 +9,8 @@ public interface IndexDocument {
 
     String documentName();
 
+    void addWord(String word);
+
     boolean containsWord(String word);
 
     default int calculateScore(RankingScoreCalculator scoreCalculator, String[] words) {
